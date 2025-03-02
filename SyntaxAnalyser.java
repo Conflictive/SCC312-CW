@@ -411,33 +411,6 @@ public class SyntaxAnalyser extends AbstractSyntaxAnalyser {
         }
     }
     
-    private void _term_() throws IOException, CompilationException {
-        try {
-            myGenerate.commenceNonterminal("Term");
-            
-            // First, parse a Factor (this is always the first part of a Term)
-            _factor_();
-            
-            // Then, look for zero or more occurrences of (*|/|%) <Factor>
-            while (nextToken.symbol == Token.timesSymbol || 
-                   nextToken.symbol == Token.divideSymbol || 
-                   nextToken.symbol == Token.modSymbol) {
-                
-                // Accept the operator (*, /, or %)
-                acceptTerminal(nextToken.symbol);
-                
-                // Parse another Factor
-                _factor_();
-                
-                // The loop will continue if there's another *, /, or % token
-            }
-            
-            myGenerate.finishNonterminal("Term");
-        } catch (CompilationException e) {
-            throw new CompilationException("Error in Term", e);
-        }
-    }
-    
     private void _factor_ () throws IOException, CompilationException {
         try {
             myGenerate.commenceNonterminal("Factor");
